@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>惟妙造物 — 定制你的专属潮玩手办</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #fdf8f3;
+    --ink: #2b2b3a;
+    --ink-soft: #6b6b80;
+    --coral: #ff6b8a;
+    --coral-dark: #e84f73;
+    --yellow: #ffd23f;
+    --mint: #4ecdc4;
+    --sky: #6cc8ff;
+    --purple: #a78bfa;
+    --card: #ffffff;
+    --radius: 24px;
+    --shadow: 0 12px 40px rgba(43, 43, 58, 0.08);
+    --shadow-hover: 0 20px 60px rgba(43, 43, 58, 0.15);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+
+  /* === Nav === */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(253, 248, 243, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(43, 43, 58, 0.06);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: 1px; }
+  .logo-mark {
+    width: 38px; height: 38px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--coral), var(--yellow));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 20px;
+    box-shadow: 0 6px 16px rgba(255, 107, 138, 0.4);
+  }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { text-decoration: none; color: var(--ink-soft); font-weight: 500; font-size: 15px; transition: color .2s; }
+  .nav-links a:hover { color: var(--coral); }
+  .nav-cta {
+    padding: 10px 24px; border-radius: 999px;
+    background: var(--ink); color: #fff; text-decoration: none;
+    font-weight: 600; font-size: 14px; transition: transform .2s, box-shadow .2s;
+  }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(43,43,58,0.25); }
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+  }
+
+  /* === Hero === */
+  .hero {
+    min-height: 100vh; padding: 120px 40px 60px;
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center;
+    max-width: 1280px; margin: 0 auto;
+    position: relative;
+  }
+  .hero::before {
+    content: ""; position: absolute; top: 10%; right: -5%;
+    width: 380px; height: 380px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,210,63,0.25), transparent 70%);
+    z-index: -1;
+  }
+  .hero::after {
+    content: ""; position: absolute; bottom: 5%; left: -8%;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(78,205,196,0.2), transparent 70%);
+    z-index: -1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 999px;
+    background: rgba(255, 107, 138, 0.1);
+    color: var(--coral-dark); font-size: 14px; font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+  .hero h1 {
+    font-size: 60px; line-height: 1.1; font-weight: 800; letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(120deg, var(--coral), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p.lead { font-size: 19px; color: var(--ink-soft); margin-bottom: 36px; max-width: 480px; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 16px 32px; border-radius: 999px; border: none; cursor: pointer;
+    background: linear-gradient(120deg, var(--coral), var(--coral-dark));
+    color: #fff; font-size: 16px; font-weight: 700; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    box-shadow: 0 10px 30px rgba(255,107,138,0.4);
+    transition: transform .2s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); }
+  .btn-ghost {
+    padding: 16px 32px; border-radius: 999px;
+    background: #fff; color: var(--ink); font-size: 16px; font-weight: 600; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 2px solid rgba(43,43,58,0.1);
+    transition: transform .2s, border-color .2s;
+  }
+  .btn-ghost:hover { transform: translateY(-3px); border-color: var(--ink); }
+  .hero-stats { display: flex; gap: 40px; margin-top: 48px; }
+  .hero-stats .stat .num { font-size: 32px; font-weight: 800; color: var(--ink); }
+  .hero-stats .stat .label { font-size: 14px; color: var(--ink-soft); }
+  .hero-visual {
+    position: relative;
+  }
+  .hero-visual .main-img {
+    border-radius: 32px; overflow: hidden;
+    box-shadow: var(--shadow-hover);
+    transform: rotate(-2deg);
+    border: 8px solid #fff;
+  }
+  .hero-visual .float-tag {
+    position: absolute; padding: 12px 18px; border-radius: 16px;
+    background: #fff; box-shadow: var(--shadow);
+    font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; gap: 8px;
+    animation: float 4s ease-in-out infinite;
+  }
+  .hero-visual .float-tag.t1 { top: 20px; left: -20px; }
+  .hero-visual .float-tag.t2 { bottom: 40px; right: -10px; animation-delay: 1.5s; }
+  .float-tag .emoji { font-size: 22px; }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding: 100px 20px 40px; text-align: center; }
+    .hero h1 { font-size: 38px; }
+    .hero p.lead { margin-left: auto; margin-right: auto; }
+    .hero-actions, .hero-stats { justify-content: center; }
+    .hero-stats { gap: 24px; }
+  }
+
+  /* === Section common === */
+  section { padding: 100px 40px; max-width: 1280px; margin: 0 auto; }
+  .section-head { text-align: center; margin-bottom: 64px; }
+  .section-head .eyebrow {
+    display: inline-block; padding: 6px 16px; border-radius: 999px;
+    font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .section-head h2 { font-size: 42px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 16px; }
+  .section-head p { font-size: 17px; color: var(--ink-soft); max-width: 560px; margin: 0 auto; }
+  @media (max-width: 768px) { .section-head h2 { font-size: 30px; } section { padding: 60px 20px; } }
+
+  /* === Process === */
+  #process .eyebrow { background: rgba(255,210,63,0.2); color: #b8860b; }
+  .process-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  }
+  .process-card {
+    background: var(--card); border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow); transition: transform .3s, box-shadow .3s;
+    position: relative;
+  }
+  .process-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+  .process-card .img-wrap { height: 220px; overflow: hidden; position: relative; background: #f0eee8; }
+  .process-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .process-card .step-num {
+    position: absolute; top: 14px; left: 14px;
+    width: 36px; height: 36px; border-radius: 12px;
+    background: var(--ink); color: var(--yellow);
+    font-weight: 800; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .process-card .body { padding: 22px; }
+  .process-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .process-card p { font-size: 14px; color: var(--ink-soft); }
+  .process-arrow {
+    position: absolute; right: -18px; top: 50%; transform: translateY(-50%);
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--bg); display: flex; align-items: center; justify-content: center;
+    font-size: 18px; z-index: 2; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  @media (max-width: 900px) {
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
+    .process-arrow { display: none; }
+  }
+  @media (max-width: 520px) { .process-grid { grid-template-columns: 1fr; } }
+
+  /* === Gallery === */
+  #gallery .eyebrow { background: rgba(255,107,138,0.15); color: var(--coral-dark); }
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .gallery-item {
+    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    transition: transform .3s, box-shadow .3s; cursor: pointer;
+    position: relative;
+  }
+  .gallery-item:hover { transform: translateY(-6px) scale(1.02); box-shadow: var(--shadow-hover); }
+  .gallery-item img { width: 100%; height: 360px; object-fit: cover; transition: transform .5s; }
+  .gallery-item:hover img { transform: scale(1.08); }
+  .gallery-item .caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px; color: #fff;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  }
+  .gallery-item .caption .tag {
+    display: inline-block; padding: 4px 10px; border-radius: 999px;
+    background: var(--coral); font-size: 12px; font-weight: 700; margin-bottom: 8px;
+  }
+  .gallery-item .caption h4 { font-size: 16px; font-weight: 700; }
+  @media (max-width: 768px) { .gallery-grid { grid-template-columns: 1fr; } .gallery-item img { height: 280px; } }
+
+  /* === Pricing === */
+  #pricing .eyebrow { background: rgba(78,205,196,0.2); color: #2a9d8f; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; align-items: stretch; }
+  .price-card {
+    background: var(--card); border-radius: var(--radius);
+    padding: 40px 32px; box-shadow: var(--shadow);
+    position: relative; transition: transform .3s;
+    display: flex; flex-direction: column;
+  }
+  .price-card:hover { transform: translateY(-8px); }
+  .price-card.featured {
+    background: linear-gradient(160deg, var(--ink), #3d3d56);
+    color: #fff;
+    transform: scale(1.04);
+    box-shadow: 0 20px 60px rgba(43,43,58,0.3);
+  }
+  .price-card.featured:hover { transform: scale(1.04) translateY(-8px); }
+  .price-card .ribbon {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    padding: 6px 18px; border-radius: 999px;
+    background: var(--yellow); color: var(--ink);
+    font-size: 13px; font-weight: 800; letter-spacing: 1px;
+    box-shadow: 0 6px 16px rgba(255,210,63,0.5);
+  }
+  .price-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+  .price-card .desc { font-size: 14px; opacity: 0.7; margin-bottom: 24px; }
+  .price-card .price {
+    font-size: 48px; font-weight: 800; margin-bottom: 4px;
+  }
+  .price-card .price .unit { font-size: 18px; font-weight: 500; opacity: 0.7; }
+  .price-card .price-sub { font-size: 13px; opacity: 0.6; margin-bottom: 28px; }
+  .price-card ul { list-style: none; margin-bottom: 32px; flex-grow: 1; }
+  .price-card ul li {
+    padding: 10px 0; font-size: 15px;
+    display: flex; align-items: flex-start; gap: 10px;
+    border-bottom: 1px solid rgba(43,43,58,0.06);
+  }
+  .price-card.featured ul li { border-color: rgba(255,255,255,0.1); }
+  .price-card ul li .check { color: var(--mint); font-weight: 800; flex-shrink: 0; }
+  .price-card.featured ul li .check { color: var(--yellow); }
+  .price-card .btn {
+    text-align: center; padding: 14px; border-radius: 14px;
+    text-decoration: none; font-weight: 700; font-size: 15px;
+    transition: transform .2s;
+  }
+  .price-card .btn:hover { transform: translateY(-2px); }
+  .price-card .btn.outline { background: var(--bg); color: var(--ink); border: 2px solid rgba(43,43,58,0.1); }
+  .price-card .btn.solid { background: var(--coral); color: #fff; }
+  .price-card.featured .btn.solid { background: var(--yellow); color: var(--ink); }
+  @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; } .price-card.featured { transform: none; } .price-card.featured:hover { transform: translateY(-8px); } }
+
+  /* === FAQ === */
+  #faq .eyebrow { background: rgba(167,139,250,0.2); color: #6d4dd6; }
+  .faq-list { max-width: 760px; margin: 0 auto; }
+  .faq-item {
+    background: var(--card); border-radius: 20px; margin-bottom: 16px;
+    box-shadow: var(--shadow); overflow: hidden;
+    border: 1px solid rgba(43,43,58,0.04);
+  }
+  .faq-q {
+    padding: 22px 28px; font-weight: 700; font-size: 16px;
+    display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+    transition: background .2s;
+  }
+  .faq-q:hover { background: rgba(255,107,138,0.04); }
+  .faq-q .icon { font-size: 22px; color: var(--coral); transition: transform .3s; flex-shrink: 0; }
+  .faq-item.open .faq-q .icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden; transition: max-height .4s ease;
+  }
+  .faq-item.open .faq-a { max-height: 240px; }
+  .faq-a p { padding: 0 28px 22px; color: var(--ink-soft); font-size: 15px; }
+
+  /* === CTA === */
+  .cta-section {
+    margin: 60px auto; max-width: 1180px; padding: 80px 40px;
+    background: linear-gradient(135deg, var(--coral), var(--purple));
+    border-radius: 40px; text-align: center; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ""; position: absolute; top: -40px; right: -40px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+  }
+  .cta-section::after {
+    content: ""; position: absolute; bottom: -60px; left: -30px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,210,63,0.2);
+  }
+  .cta-section h2 { font-size: 40px; font-weight: 800; margin-bottom: 16px; position: relative; z-index: 1; }
+  .cta-section p { font-size: 18px; opacity: 0.9; margin-bottom: 36px; position: relative; z-index: 1; }
+  .cta-qr {
+    background: #fff; padding: 24px; border-radius: 24px;
+    display: inline-block; position: relative; z-index: 1;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  }
+  .cta-qr .qr-placeholder {
+    width: 200px; height: 200px; background: #f5f5f5; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: #aaa; font-size: 14px; text-align: center; padding: 20px;
+    border: 2px dashed #ddd;
+  }
+  .cta-qr .label { margin-top: 16px; color: var(--ink); font-weight: 700; font-size: 15px; }
+  .cta-qr .sub { color: var(--ink-soft); font-size: 13px; margin-top: 4px; }
+
+  /* === Footer === */
+  footer { padding: 40px; text-align: center; color: var(--ink-soft); font-size: 14px; border-top: 1px solid rgba(43,43,58,0.06); }
+  footer .brand { font-weight: 800; color: var(--ink); margin-bottom: 8px; }
+
+  /* floating side button */
+  .float-order {
+    position: fixed; right: 24px; bottom: 24px; z-index: 90;
+    padding: 14px 24px; border-radius: 999px;
+    background: var(--ink); color: #fff; text-decoration: none;
+    font-weight: 700; font-size: 15px;
+    box-shadow: 0 10px 30px rgba(43,43,58,0.3);
+    display: flex; align-items: center; gap: 8px;
+    transition: transform .2s;
+  }
+  .float-order:hover { transform: translateY(-3px); }
+  @media (max-width: 768px) { .float-order { right: 16px; bottom: 16px; padding: 12px 20px; font-size: 14px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><div class="logo-mark">惟</div> 惟妙造物</div>
+  <div class="nav-links">
+    <a href="#process">制作流程</a>
+    <a href="#pricing">尝新定价</a>
+    <a href="#faq">常见问题</a>
+  </div>
+  <a class="nav-cta" href="#order">立即定制</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <span class="hero-badge"><span class="dot"></span> 700+ 美工订单交付 · 3D 手办尝新上线</span>
+    <h1>把你 <span class="grad">变成潮玩</span><br>独一无二的手办</h1>
+    <p class="lead">只需一张照片，我们用 3D 建模 + 高精度打印 + 手工上色，为你打造专属限量款人偶。3D 手办为尝新阶段，限量接单，价格随案例积累逐步上调。</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#order">立即定制 →</a>
+      <a class="btn-ghost" href="#process">了解流程</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="num">700+</div><div class="label">美工订单交付</div></div>
+      <div class="stat"><div class="num">尝新</div><div class="label">3D 手办阶段</div></div>
+      <div class="stat"><div class="num">288起</div><div class="label">尝新价</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <img class="main-img" src="step2-3d-render.png" alt="定制手办成品">
+    <div class="float-tag t1"><span class="emoji">🎨</span> 手工上色</div>
+    <div class="float-tag t2"><span class="emoji">🧵</span> 高精度打印</div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-head">
+    <span class="eyebrow">制作流程</span>
+    <h2>四步，从照片到手办</h2>
+    <p>整个过程透明可跟进，每个环节都有专人把关。你只需提供照片，剩下的交给我们。</p>
+  </div>
+  <div class="process-grid">
+    <div class="process-card">
+      <div class="img-wrap">
+        <img src="step1-reference-photo.jpg" alt="实拍参考照片">
+        <div class="step-num">1</div>
+      </div>
+      <div class="body">
+        <h3>提供照片</h3>
+        <p>发送一张清晰的正面照，告知服装、姿势、配件等偏好，我们为你定制造型方案。</p>
+      </div>
+      <div class="process-arrow">→</div>
+    </div>
+    <div class="process-card">
+      <div class="img-wrap">
+        <img src="step2-3d-render.png" alt="3D 建模渲染">
+        <div class="step-num">2</div>
+      </div>
+      <div class="body">
+        <h3>3D 建模</h3>
+        <p>专业建模师根据照片还原神态与细节，出具 3D 效果图，确认后才进入生产。</p>
+      </div>
+      <div class="process-arrow">→</div>
+    </div>
+    <div class="process-card">
+      <div class="img-wrap">
+        <img src="step3-stl-model.png" alt="STL 模型与打印">
+        <div class="step-num">3</div>
+      </div>
+      <div class="body">
+        <h3>3D 打印</h3>
+        <p>高精度光固化打印，层纹细腻、结构稳固，为后续上色打下完美基础。</p>
+      </div>
+      <div class="process-arrow">→</div>
+    </div>
+    <div class="process-card">
+      <div class="img-wrap">
+        <img src="step4-printed-figure.jpg" alt="手工上色成品">
+        <div class="step-num">4</div>
+      </div>
+      <div class="body">
+        <h3>手工上色</h3>
+        <p>资深涂装师逐只手绘上色，从肤色到衣物纹理，呈现独一无二的成品质感。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-head">
+    <span class="eyebrow">尝新定价</span>
+    <h2>尝新价，限量接单</h2>
+    <p>3D 手办是新上线服务，以下为尝新期定价。随着案例积累会逐步上调，早下单早享受。所有方案均含建模、打印、上色全套，最终价格视复杂度而定，报价前会与你确认。</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <h3>基础款</h3>
+      <div class="desc">单人坐姿/站姿 · 简单服装</div>
+      <div class="price">¥288<span class="unit"> /只</span></div>
+      <div class="price-sub">尝新价 · 适合送礼、留念</div>
+      <ul>
+        <li><span class="check">✓</span> 单人肖像定制</li>
+        <li><span class="check">✓</span> 1 款服装方案</li>
+        <li><span class="check">✓</span> 标准底座</li>
+        <li><span class="check">✓</span> 7–10 天交付</li>
+        <li><span class="check">✓</span> 2 次免费微调</li>
+      </ul>
+      <a class="btn outline" href="#order">选择基础款</a>
+    </div>
+    <div class="price-card featured">
+      <div class="ribbon">尝新推荐</div>
+      <h3>精致款</h3>
+      <div class="desc">单人定制 · 含配件/公仔/场景</div>
+      <div class="price">¥388<span class="unit"> /只</span></div>
+      <div class="price-sub">尝新价 · 送朋友、纪念日的首选</div>
+      <ul>
+        <li><span class="check">✓</span> 基础款全部内容</li>
+        <li><span class="check">✓</span> 含 1 件道具/公仔配饰</li>
+        <li><span class="check">✓</span> 精细衣物纹理上色</li>
+        <li><span class="check">✓</span> 可选简易场景底座</li>
+        <li><span class="check">✓</span> 10–14 天交付</li>
+        <li><span class="check">✓</span> 3 次免费微调</li>
+      </ul>
+      <a class="btn solid" href="#order">选择精致款</a>
+    </div>
+    <div class="price-card">
+      <h3>典藏款</h3>
+      <div class="desc">双人/多人 · 复杂场景定制</div>
+      <div class="price">¥588<span class="unit">起</span></div>
+      <div class="price-sub">婚礼、纪念日、家庭纪念</div>
+      <ul>
+        <li><span class="check">✓</span> 双人或多人组合</li>
+        <li><span class="check">✓</span> 定制场景与道具</li>
+        <li><span class="check">✓</span> 高级涂装工艺</li>
+        <li><span class="check">✓</span> 专属定制底座</li>
+        <li><span class="check">✓</span> 14–21 天交付</li>
+        <li><span class="check">✓</span> 无限次微调至满意</li>
+      </ul>
+      <a class="btn outline" href="#order">咨询典藏款</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-head">
+    <span class="eyebrow">常见问题</span>
+    <h2>下单前你可能想知道</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">只需要一张照片就能做吗？<span class="icon">+</span></div>
+      <div class="faq-a"><p>一张清晰的正面照就可以开工。如果你有多角度照片、参考姿势或服装要求，还原度会更高。建模阶段我们会先出效果图让你确认，不满意可以调整。</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">成品有多大？什么材质？<span class="icon">+</span></div>
+      <div class="faq-a"><p>常规高度约 8–12 厘米，采用高精度光固化树脂打印，表面手工丙烯上色，质感细腻。如需更大尺寸或特殊材质，可单独沟通。</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">多久能收到？<span class="icon">+</span></div>
+      <div class="faq-a"><p>基础款 7–10 天，精致款 10–14 天，典藏款 14–21 天。如遇订单高峰会提前告知，急单可加急处理。</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">可以做成和别人一样的姿势吗？<span class="icon">+</span></div>
+      <div class="faq-a"><p>可以。你可以发参考图说明想要的姿势、服装、表情、道具，我们会按你的描述建模并在效果图阶段与你确认。</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">收到不满意怎么办？<span class="icon">+</span></div>
+      <div class="faq-a"><p>建模阶段免费微调至上色前。成品如因制作问题导致破损或严重失真，免费返工。因个人审美差异的微调，会按工时酌情收费。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="order">
+  <h2>准备好定制你的专属手办了吗？</h2>
+  <p>扫码添加微信，发一张照片，我们为你报价。尝新期订单有限，先到先得。</p>
+  <div class="cta-qr">
+    <img src="wechat-qrcode.jpg" alt="微信二维码" style="width:200px;height:200px;border-radius:16px;object-fit:cover;">
+    <div class="label">扫码添加微信 · 宫商角</div>
+    <div class="sub">备注「定制手办」优先通过</div>
+  </div>
+</div>
+
+<a class="float-order" href="#order">💬 立即定制</a>
+
+<footer>
+  <div class="brand">惟妙造物</div>
+  <div>用 3D 与双手，把每个人变成潮玩 · 定制咨询请扫上方二维码</div>
+</footer>
+
+<script>
+  // FAQ toggle
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
